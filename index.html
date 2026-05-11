@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Laid App</title>
+
+<!-- Meta tags para parecer App -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#0a0a0a">
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #181818;
+    --border: #2a2a2a;
+    --white: #f5f5f0;
+    --muted: #888;
+    --accent: #e8d5a3;
+    --accent2: #c9a96e;
+    --safe-top: env(safe-area-inset-top);
+  }
+
+  * { 
+    margin: 0; padding: 0; box-sizing: border-box; 
+    -webkit-tap-highlight-color: transparent; /* Remove o brilho ao tocar */
+  }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    overscroll-behavior-y: contain; /* Trava o "puxar para atualizar" */
+    padding-top: var(--safe-top);
+  }
+
+  /* Header mais compacto estilo App */
+  header {
+    padding: 40px 24px 20px;
+    background: linear-gradient(180deg, #1a1510 0%, var(--black) 100%);
+    position: sticky;
+    top: 0;
+    z-index: 101;
+  }
+
+  header h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 48px;
+    letter-spacing: 2px;
+  }
+  
+  header h1 span { color: var(--accent); }
+
+  /* Tabs fixas no topo abaixo do header */
+  .tabs {
+    display: flex;
+    background: rgba(17, 17, 17, 0.95);
+    backdrop-filter: blur(10px);
+    position: sticky;
+    top: 108px; /* Ajuste dependendo da altura do seu header */
+    z-index: 100;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab {
+    flex: 1;
+    padding: 15px 0;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    text-align: center;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+  }
+
+  .tab.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+  /* Container de conteúdo com scroll suave */
+  .content {
+    padding: 20px 16px 150px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .day-panel { display: none; }
+  .day-panel.active { display: block; animation: slideUp 0.3s ease-out; }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Cards de exercício otimizados para touch */
+  .exercise-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin-bottom: 12px;
+    transition: all 0.2s;
+  }
+
+  .exercise-card:active { transform: scale(0.98); background: #202020; }
+  .exercise-card.done { background: #0f0f0f; border-color: var(--accent2); opacity: 0.6; }
+
+  .card-main { display: flex; align-items: center; padding: 20px; gap: 16px; }
+
+  .exercise-num { font-family: 'Bebas Neue', sans-serif; font-size: 24px; color: #333; }
+  .exercise-info { flex: 1; }
+  .exercise-name { font-weight: 500; font-size: 16px; margin-bottom: 2px; }
+  .exercise-detail { font-size: 11px; color: var(--muted); }
+
+  .set-badge {
+    background: #252525;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-family: 'Bebas Neue', sans-serif;
+    color: var(--accent);
+  }
+
+  /* Barra de progresso estilo Mobile */
+  .progress-wrap {
+    position: fixed;
+    bottom: 20px; left: 16px; right: 16px;
+    background: rgba(24, 24, 24, 0.95);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    z-index: 200;
+  }
+
+  .progress-bar-bg { height: 6px; background: #333; border-radius: 3px; margin-top: 8px; }
+  .progress-bar-fill { height: 100%; background: var(--accent); border-radius: 3px; width: 0%; transition: width 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67); }
+
+  .section-label {
+    font-size: 11px; letter-spacing: 2px; color: var(--muted);
+    margin: 24px 0 12px; text-transform: uppercase;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>LAID<span>APP</span></h1>
+</header>
+
+<div class="tabs">
+  <button class="tab active" onclick="showDay(0)">PUSH</button>
+  <button class="tab" onclick="showDay(1)">PULL</button>
+  <button class="tab" onclick="showDay(2)">LEGS</button>
+  <button class="tab" onclick="showDay(3)">ABS</button>
+</div>
+
+<div class="content">
+  <!-- O conteúdo dos treinos (Day Panels) entraria aqui igual ao seu código anterior -->
+  <!-- Exemplo rápido de um card para teste -->
+  <div class="day-panel active" id="day-0">
+    <div class="section-label">Foco: Peito e Ombro</div>
+    <div class="exercise-card" onclick="toggleDone(this)">
+      <div class="card-main">
+        <div class="exercise-num">01</div>
+        <div class="exercise-info">
+          <div class="exercise-name">Supino Inclinado DB</div>
+          <div class="exercise-detail">Foco em peito superior</div>
+        </div>
+        <div class="set-badge">3×12</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="progress-wrap">
+  <div style="display: flex; justify-content: space-between; align-items: center;">
+    <span id="status-text" style="font-size: 12px; font-weight: 500;">BORA TREINAR!</span>
+    <span id="progress-text" style="font-family: 'Bebas Neue'; color: var(--accent); font-size: 18px;">0%</span>
+  </div>
+  <div class="progress-bar-bg">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<script>
+  function showDay(index) {
+    document.querySelectorAll('.day-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('day-' + index).classList.add('active');
+    document.querySelectorAll('.tab')[index].classList.add('active');
+    updateProgress();
+  }
+
+  function toggleDone(card) {
+    card.classList.toggle('done');
+    updateProgress();
+    
+    // Feedback hático (vibração) se o celular suportar
+    if (window.navigator.vibrate) {
+      window.navigator.vibrate(10);
+    }
+  }
+
+  function updateProgress() {
+    const activePanel = document.querySelector('.day-panel.active');
+    const total = activePanel.querySelectorAll('.exercise-card').length;
+    const done = activePanel.querySelectorAll('.exercise-card.done').length;
+    const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = pct + '%';
+    
+    const status = document.getElementById('status-text');
+    if(pct === 100) status.textContent = "TREINO PAGO! 🔥";
+    else if(pct > 0) status.textContent = "NO CAMINHO...";
+    else status.textContent = "BORA TREINAR!";
+  }
+</script>
+</body>
+</html>
